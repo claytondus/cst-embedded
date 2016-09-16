@@ -31,3 +31,10 @@
 # Debug files
 *.dSYM/
 *.su
+
+*.log
+*.aux
+*.blg
+*.pdf
+*.gz
+

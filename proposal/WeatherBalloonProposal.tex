@@ -437,7 +437,7 @@ interests.
 \subsection{Purpose}
 The primary goal of our proposed design is to build a weather balloon device that could contribute
  value to groups and users concerned with environmental health standards. As the scope and 
- understanding of environmental challenges society faces has increased, the day to day health 
+ understanding of environmental challenges facing society have increased, the day to day health 
  hazards and risks people face will continue to increase and be a cause for greater concern as well.
   Our intention is to contribute to low-cost sensor detection of such hazards by taking advantage of 
   increasingly small and efficient embedded system components. Such a device could then be customized 
@@ -468,17 +468,23 @@ If it is implemented the system controller will have to condense the images in o
 \subsection{Radio}
 Communications with the airborne payload will occur via an onboard VHF/UHF amateur radio transceiver.  
 The system will use the Automatic Packet Reporting System (APRS) to facilitate telemetry and telecommand.  
-APRS is “a packet communications protocol for disseminating live data to everyone on a network in real time”.
+APRS is ``a packet communications protocol for disseminating live data to everyone on a network in real 
+time.''\cite{aprs}
+
   Messages are formatted with the AX.25 protocol and transmitted on 144.39 MHz.  Digital terrestrial repeater
    stations receive each message and retransmit it at higher power for ease of reception by monitoring stations.
      The APRS data is also collected via the Internet by several organizations for later retrieval.  For example, 
      the aprs.fi Web site plots APRS position data using Google Maps (which will be used to track the payload), 
-     and aggegates the sensor telemetry for ease of analysis.  APRS messages will also be used to transmit 
+     and aggegates the sensor telemetry for ease of analysis.  
+     
+     APRS messages will also be used to transmit 
      instructions to the payload; this may include a command to jettison the lifting assembly or activate/deactivate certain sensors.
+
 The radio will also accommodate image transmission via slow-scan television (SSTV) protocols.  Amateur radio SSTV is capable of transmitting a 256-line RGB image in approximately 60 seconds over UHF modes.  Downlink reception will be carried out at the operator station using a typical 70 cm capable handheld transceiver and a PC with appropriate decoding software. 
 
 \subsection{Lifting Assembly}
 The US Naval Academy has launched several experimental payloads with common Mylar party balloons providing lift up to 30k ft and durations of thousands of miles.  While our payload mass will likely exceed theirs, we desire a shorter mission duration and altitude as well as predictable recovery.  
+
 We expect to jettison a portion of the balloon assembly using a thermal technique at the desired conclusion of each flight.  This may be initiated automatically, or via remote command if implemented.  A reduced number of balloons will remain attached to the payload to provide a predictable descent.
 
 \subsection{Payload Chassis}
@@ -486,11 +492,13 @@ The system controller, radio, and sensors must be contained and protected from t
 
 \subsection{Power Supply}
 Power to the payload systems is expected to be provided by a NiMH or Li-Ion battery pack providing at 
-least 2100 mAh capacity.  The radio and system controller require different voltages and possibly multiple 
+least 2100 mAh capacity.  The radio and system controller require different voltages, and it is possible that multiple 
 sources will be used.
 
 \section{Challenges}
-The design process of embedded systems is undergone with many associated challenges, often requiring compromise of certain initial targets to ensure meeting important constraints. The proposed design is no exception. Perhaps the most glaring obstacle will be power budget and management.  The radio requires at least 1 W continuous power at 7.2 V for long periods (60 s or more). Power must last for the duration of the flight in order to ensure recovery. Although efficient by many standards, the microcontroller and other components will also need to be managed such that we can acquire a useful amount of data (ideally at least one hour of continuous data collection). The microcontroller processing time must also be considered. Data and image processing must be handled while minimizing the transmitted data, since our goal is to send telemetry once every minute with images at least once every ten minutes. The Arduino program is also limited by the available program storage space on the processing unit, so efficient software design is needed in order to achieve these goals with minimal program size. Lastly, mechanical aspects of the design pose some additional challenges, with the foremost of them being the payload mass and lift capability. Testing will be required to determine balloon lift of a certain payload mass. As the intention is to launch the device into the atmosphere, potential environmental conditions such as weather, winds, and temperature could all affect the operation of hardware as well as the effective flight pattern and recovery of the device. 
+The design process of embedded systems presents many associated challenges, often requiring compromise of certain initial targets to ensure meeting important constraints. Our proposed design is no exception. Perhaps the most glaring obstacle will be power budget and management.  
+The radio requires at least 1 W continuous power at 7.2 V for long periods (60 s or more) if image transmission is implemented. 
+Power must last for the duration of the flight in order to ensure recovery. Although efficient by many standards, the microcontroller and other components will need to be managed such that we can acquire a useful amount of data (ideally at least one hour of continuous data collection). The microcontroller processing time must also be considered. Data and image processing must be handled while minimizing the transmitted data, since our goal is to send telemetry once every minute with images at least once every ten minutes. The Arduino program is also limited by the available program storage space on the processing unit, so efficient software design is needed in order to achieve these goals with minimal program size. Lastly, mechanical aspects of the design pose some additional challenges, with the foremost of them being the payload mass and lift capability. Testing will be required to determine balloon lift of a certain payload mass. As the intention is to launch the device into the atmosphere, potential environmental conditions such as weather, winds, and temperature could all affect the operation of hardware as well as the effective flight pattern and recovery of the device. 
 
 \section{Goals}
 Upon completion, we expect that this project will provide us with significant interdisciplinary engineering experience.  The constraints on the system such as weight, power, and computational expense will broaden our expertise beyond solving ordinary hardware and software issues.  Through repeated flights, we expect to model day to day changes in the local atmosphere, and draw conclusions about the relationship of weather, pollution and the environment.
@@ -638,9 +646,8 @@ Upon completion, we expect that this project will provide us with significant in
 % (used to reserve space for the reference number labels box)
 \begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+\bibitem{aprs}
+APRS Working Group, \emph{APRS Protocol Reference,} Version 1.0.1, 2000.
 
 \end{thebibliography}
 
