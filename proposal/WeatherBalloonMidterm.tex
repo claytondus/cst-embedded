@@ -130,12 +130,12 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+   \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
+   %\graphicspath{{../pdf/}{../jpeg/}}
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+   \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % will default to the driver specified in the system graphics.cfg if no
@@ -397,8 +397,8 @@ Email: tturne28@vols.utk.edu}}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-Develop a low-cost weather balloon sensor system with APRS radio telemetry that focuses on specific 
-environmental health standards such as air quality and pollutant levels.
+Develop a low-cost airborne sensor platform, or radiosonde, with GPS and telemetry reporting 
+that focuses on specific environmental health standards such as air quality and pollutant levels.
 \end{abstract}
 
 % no keywords
@@ -422,86 +422,169 @@ environmental health standards such as air quality and pollutant levels.
 % no \IEEEPARstart
 
 \subsection{Aim}
-In this document, we articulate a design to create a low-cost weather balloon with sensor data 
-collection and communication via amateur APRS radio. Its primary purpose as a sensor system 
-is to take frequent data measurements of specific environmental/health pollutants such that a 
-general understanding of environmental conditions and safety can be determined by the user. 
-Common air pollutants, such as CO2, ozone, nitrogen oxides, and lead will be our primary focus, 
-although some other particulate matter might be considered as the design evolves. Ultimately, 
-users will be able to process data based on relayed GPS coordinates, altitude, and time giving an 
-insightful picture into the local environment’s safety and health. Frequent, consistent use of 
-such a low-cost device could also be used for long term research by academic or health group 
-interests. 
+In this document, we articulate a design to create a low-cost weather balloon with sensor data collection
+ and telemetry/telecommand via radio. Its primary purpose as a sensor system is to take frequent data 
+ measurements of specific environmental/health pollutants such that a general understanding of 
+ environmental conditions and safety can be determined by the user. Common air pollutants, such as 
+ carbon dioxide, ozone, nitrogen oxides, and lead will be our primary focus, although some other particulate 
+ matter might be considered as the design evolves. Ultimately, users will be able to process data based on 
+ relayed GPS coordinates, altitude, and time giving an insightful picture into the local environment’s safety 
+ and health. Frequent and repetitive use of such a low-cost device could also be used for long term 
+ research by academic or health group interests. 
 
 
 \subsection{Purpose}
-The primary goal of our proposed design is to build a weather balloon device that could contribute
- value to groups and users concerned with environmental health standards. As the scope and 
- understanding of environmental challenges facing society have increased, the day to day health 
- hazards and risks people face will continue to increase and be a cause for greater concern as well.
-  Our intention is to contribute to low-cost sensor detection of such hazards by taking advantage of 
-  increasingly small and efficient embedded system components. Such a device could then be customized 
-  for very specific uses by simply interchanging the specific sensor/pollutant detection devices to tailor to a 
-  variety of needs.  Envisioning an entire platform for personal environmental health detection devices, our 
-  proposed design is ideally a gateway to serve many potential needs.
+The primary goal of our proposed design is to build a weather balloon device that could contribute value to groups and users concerned with environmental health standards. As the scope and understanding of environmental challenges facing society has increased, the day to day health hazards and risks people face will continue to increase and be a cause for greater concern as well. Our intention is to contribute to low-cost sensor detection of such hazards by taking advantage of increasingly small and efficient embedded system components. Such a device could then be customized for very specific uses by simply interchanging the specific sensor/pollutant detection devices to tailor to a variety of needs.  Envisioning an entire platform for personal environmental health detection devices, our proposed design is ideally a gateway to serve many potential needs.
   
-\section{Background}
+\subsection{Goals}
+  Upon completion, we expect that this project will provide us with significant interdisciplinary engineering experience.  The constraints on the system such as weight, power, and computational expense will broaden our expertise beyond solving ordinary hardware and software issues.  Through repeated flights, we expect to model day to day changes in the local atmosphere, and draw conclusions about the relationship of weather, pollution and the environment.
 
-\subsection{System Controller (Arduino UNO)}
-The Arduino platform and hardware support is well established and supported for prototyping and 
-embedded system design. This makes it an ideal candidate to be the control system. Similarly, there are 
-many sensor/radio shields (hardware extensions) that can be added to complete our system design. 
-Currently, the system will use an Arduino UNO, which uses an ATmega328 microcontroller from Atmel. 
-The UNO board supports multiple I/O interfaces for digital and analog reads, SPI bus, I2C, etc, which should 
-adequately support our hazard and supplementary sensors. The Arduino IDE is built around C/C++ 
-programming languages, with extensive library support for communication protocols and data logging. 
-Most hardware manufacturers provide library code as well, freeing our software design to focus on the 
-control aspects of managing multiple sensors and I/O devices. The efficiency of the program will have to 
-be prioritized within the constraints of limited program space and limited communication bandwidth over 
-radio frequencies. 
+\section{Requirements}
+In addition to the primary purpose of sensing, collecting, and relaying atmospheric data, the system must meet significant physical constraints in order to be successfully launched and retrieved from its operational environment.  
+\subsection{Sensing}
+The system should be equipped with sensors that produce meaningful and actionable atmospheric data.  Typical radiosondes are equipped with several types of gas, particulate, and meteorological sensors.  We aim to replicate this suite as closely as possible within a limited financial, weight, and power budget.  Sensor and location data need not be produced more often than once per minute, which is believed to be sufficient for atmospheric sounding. A secondary consideration is to capture images of the environment to correlate anomalous readings with potential offenders. 
 
-\subsection{Sensors and Components}
-The sensors that will be used consist of those that measure environmental conditions (pressure, temperature, etc) and those that measure hazardous gases (carbon dioxide, ozone, nitrogen oxides, etc). Arduino has a multitude of compatible sensors used to measure air pollutants such as the MQ series. These sensors use a 2-5 V source that is either fixed or alternating between this range to power an internal heater that detects the gases. The sensitivity of the sensor relies on a load-resistor that must be in the range 2 kΩ to 47 kΩ where the lower the resistor value the lower the sensitivity. Some of the sensors will also require additional coding or the use of a transistor or MOSFET to calibrate correctly. The sensors will output an analog signal. With a large variety of available sensors, our focus will be to choose those that will be the most efficient, affordable, and capable of handling conditions faced at higher altitudes. 
-An additional component that could be included would be a camera to take pictures at a high-altitude. This is not a necessity to the design so it will be the first to be taken out if needed.
-If it is implemented the system controller will have to condense the images in order to be able to be transmitted back to the operating station.
+\subsection{Mission Profile}
+A typical radiosonde mission lasts for several hours at high altitude, and the system may drift tens to hundreds of miles in that time.  Accurate location reporting is necessary to correlate the atmospheric data with a 3D physical location, as well as retrieve the system at the end of the mission.  Thermal and environmental protection is necessary to ensure proper operation of electronic components and sensors.  
 
-\subsection{Radio}
-Communications with the airborne payload will occur via an onboard VHF/UHF amateur radio transceiver.  
-The system will use the Automatic Packet Reporting System (APRS) to facilitate telemetry and telecommand.  
-APRS is ``a packet communications protocol for disseminating live data to everyone on a network in real 
-time.''\cite{aprs}
+\begin{figure}[!t]
+\centering
+\includegraphics[width=3in]{balloon_keys.jpg}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+\caption{Testing balloon lift capacity.}
+\label{fig_sim}
+\end{figure}
 
-  Messages are formatted with the AX.25 protocol and transmitted on 144.39 MHz.  Digital terrestrial repeater
-   stations receive each message and retransmit it at higher power for ease of reception by monitoring stations.
-     The APRS data is also collected via the Internet by several organizations for later retrieval.  For example, 
-     the aprs.fi Web site plots APRS position data using Google Maps (which will be used to track the payload), 
-     and aggegates the sensor telemetry for ease of analysis.  
-     
-     APRS messages will also be used to transmit 
-     instructions to the payload; this may include a command to jettison the lifting assembly or activate/deactivate certain sensors.
+\subsection{Lift}
+The lifting mechanism must deliver the radiosonde to the target altitude for the duration of the mission, and ideally will allow the device to return to ground level with as little damage as possible.  Helium balloons are the obvious choice, although sounding is also conducted using air-dropped and rocket-propelled payloads.  Using a passive lift mechanism places severe constraints on the mass of the payload; analysis is required to determine the feasible upper bound on mass.
 
-The radio will also accommodate image transmission via slow-scan television (SSTV) protocols.  Amateur radio SSTV is capable of transmitting a 256-line RGB image in approximately 60 seconds over UHF modes.  Downlink reception will be carried out at the operator station using a typical 70 cm capable handheld transceiver and a PC with appropriate decoding software. 
+\subsection{Telemetry}
+The very real risk of payload loss requires that telemetry data be sent to the operator at regular intervals. The outputs of every sensor as well as location, altitude, and system condition should be transmitted.
 
-\subsection{Lifting Assembly}
+\subsection{Data Collection}
+While the intention is to provide real-time telemetry to the operator, an onboard storage system should be used to cache data in the event of communication failure.  
+
+\subsection{Telecommand}
+While the radiosonde is designed to be autonomous in flight, it should be possible for the operator to send commands to the radiosonde in order to control various subsystems or adjust the sensing platform.
+
+\subsection{Power}
+Sufficient power should be available to meet the mission objectives and mass constraints.
+
+\subsection{Cost}
+Ideally, the radiosonde will use off-the-shelf components at a reasonable price.  However, commercial radiosondes benefit from economies of scale in manufacturing, and the total cost for this system may not be less than a typical unit.
+
+\section{Specification}
+Upon further investigation and testing, our team developed a more refined specification for the weather balloon system.
+
+\subsection{Sensing}
+The sensors that will be used consist of those that measure environmental conditions (pressure, temperature, etc) and those that measure hazardous gases (carbon dioxide, ozone, nitrogen oxides, etc). The MQ series sensors use a 2-5 V source that is either fixed or alternating between this range to power an internal heater that detects the gases. The sensitivity of the sensor relies on a load-resistor that must be in the range 2 kΩ to 47 kΩ where the lower the resistor value the lower the sensitivity. Some of the sensors will also require additional coding or the use of a transistor to calibrate correctly. The sensors output an analog signal. With a large variety of available sensors, our focus will be to choose those that will be the most efficient, affordable, and capable of handling conditions faced at higher altitudes. 
+
+\subsection{System Control}
+A versatile, lightweight, low-power microcontroller platform is central to the functional requirements of the system.  As a sensor platform, the controller must be capable of interfacing with a variety of sensors, both analog and digital, and forwarding the data to the storage and telemetry subsystems. The system controller must be capable of scheduling multiple tasks including data collection and persistence, radio operation, and power management.  Hard real-time performance is not required, but the sensor data should be able to be correlated with a particular time and location within a few seconds.  Sufficient RAM and fixed storage should be available for data and images.
+
+Since the development cycle is short, a familiar, well-supported development environment is preferred.  The efficiency of the program will have to be prioritized within the constraints of limited program space and limited communication bandwidth.
+
+\subsection{Position}
+Typical GPS receivers are capable of outputting position and altitude information at rates of 1 to 10 Hz.  Since this exceeds the needs of the system, the GPS receiver can be readily optimized for mass.  The output is typically formatted into NMEA standard sentences which must be decoded by the system controller.
+
+\subsection{Telemetry/Telecommand}
+Since the sensor and location data are primarily text-based formats, a radio subsystem capable of direct digital text messaging is preferable.  If an imaging sensor is implemented, a corresponding data format for images must also be supported. Depending on the characteristics of the radio, it may be necessary to add management circuitry to control the radio’s power consumption.  The antennas for both position reception and data transmission should be lightweight and compact.
+
+\subsection{Lift}
 The US Naval Academy has launched several experimental payloads with common Mylar party balloons providing lift up to 30k ft and durations of thousands of miles.  While our payload mass will likely exceed theirs, we desire a shorter mission duration and altitude as well as predictable recovery.  
 
-We expect to jettison a portion of the balloon assembly using a thermal technique at the desired conclusion of each flight.  This may be initiated automatically, or via remote command if implemented.  A reduced number of balloons will remain attached to the payload to provide a predictable descent.
+Experimentation with 36-inch diameter balloons yielded an average lifting capacity of 40-45 g at a cost of \$9.95 per balloon.  To manage costs, the mass target of the radiosonde is decided as 160 g or less.
+
+We expect to jettison a portion of the balloon assembly using at the desired conclusion of each flight.  This may be initiated automatically, or via remote command if implemented.  A reduced number of balloons will remain attached to the payload to provide a predictable descent.
 
 \subsection{Payload Chassis}
-The system controller, radio, and sensors must be contained and protected from the elements in order to remain within their operational temperature limits.  Ascent to 30,000 feet altitude will present severe cooling stress to the system.  The Naval Academy payloads have used solar thermal regulation (via plastic drink bottles) to avoid the weight of styrofoam and chemical heat packs.  We expect to investigate both solar and chemical thermal regulation, and to choose the option that will best protect the electrical components on landing.
+Ascent to 30,000 feet altitude will present severe cooling stress to the system.  The Naval Academy payloads have used solar thermal regulation (via plastic drink bottles) to avoid the weight of styrofoam and chemical heat packs.  We expect to investigate both solar and chemical thermal regulation, and to choose the option that will best protect the electrical components on landing.
 
 \subsection{Power Supply}
-Power to the payload systems is expected to be provided by a NiMH or Li-Ion battery pack providing at 
-least 2100 mAh capacity.  The radio and system controller require different voltages, and it is possible that multiple 
-sources will be used.
+Power to the payload systems is expected to be provided by a lithium-ion (Li-Ion) or lithium-polymer (LiPo) battery pack providing at least 2100 mAh capacity.  The sensors, radio and system controller may require different voltages and multiple sources or voltage conversion may be required.
 
-\section{Challenges}
-The design process of embedded systems presents many associated challenges, often requiring compromise of certain initial targets to ensure meeting important constraints. Our proposed design is no exception. Perhaps the most glaring obstacle will be power budget and management.  
-The radio requires at least 1 W continuous power at 7.2 V for long periods (60 s or more) if image transmission is implemented. 
-Power must last for the duration of the flight in order to ensure recovery. Although efficient by many standards, the microcontroller and other components will need to be managed such that we can acquire a useful amount of data (ideally at least one hour of continuous data collection). The microcontroller processing time must also be considered. Data and image processing must be handled while minimizing the transmitted data, since our goal is to send telemetry once every minute with images at least once every ten minutes. The Arduino program is also limited by the available program storage space on the processing unit, so efficient software design is needed in order to achieve these goals with minimal program size. Lastly, mechanical aspects of the design pose some additional challenges, with the foremost of them being the payload mass and lift capability. Testing will be required to determine balloon lift of a certain payload mass. As the intention is to launch the device into the atmosphere, potential environmental conditions such as weather, winds, and temperature could all affect the operation of hardware as well as the effective flight pattern and recovery of the device. 
+\section{System Architecture}
+After compiling the complete set of requirements for the system, our team investigated various components to meet the requirements.
 
-\section{Goals}
-Upon completion, we expect that this project will provide us with significant interdisciplinary engineering experience.  The constraints on the system such as weight, power, and computational expense will broaden our expertise beyond solving ordinary hardware and software issues.  Through repeated flights, we expect to model day to day changes in the local atmosphere, and draw conclusions about the relationship of weather, pollution and the environment.
+\begin{figure}[!t]
+\centering
+\includegraphics[width=3.5in]{system_diagram.png}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+\caption{System block diagram.}
+\label{fig_sim}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=3.5in]{hardware_diagram.png}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+\caption{Finalized hardware diagram.}
+\label{fig_sim}
+\end{figure}
+
+\subsection{System Controller}
+The Arduino platform and hardware support is well established and supported for prototyping and embedded system design. This makes it an ideal candidate for the system controller. Similarly, there are many sensor/radio “shields” (hardware extensions) that can be added to complete the system design. Commercially-available Arduino boards support multiple I/O interfaces for digital and analog input, and SPI, TTL serial, and I2C buses which should adequately support our hazard and supplementary sensors. The Arduino IDE is built around C/C++ programming languages, with extensive library support for communication protocols and data logging. Most hardware manufacturers provide library code as well, freeing our software design to focus on the control aspects of managing multiple sensors and I/O devices. 
+
+Initially, the Arduino UNO R3, which uses an Atmel ATmega328 microcontroller, was chosen as a suitable platform for development.  The UNO is the most popular of the Arduino boards and nearly every shield and peripheral is compatible with it.  However, other Arduino controllers have less mass and can be operated with 3.3 V logic instead of the 5V required by the UNO. Newer and more capable microcontrollers are also available which retain support for most Arduino libraries.  
+
+For these reasons, the Adafruit Feather M0 “Adalogger” board was chosen for the system controller.  This series contains a 48 MHz Atmel ARM Cortex M0 core, 32K RAM, and 256K flash, as well as an on-board Secure Digital mass storage interface.  The board is designed to be powered by a 3.7V LiPo battery and contains a 100 mA on-board USB-powered charger.  Perhaps most importantly, the board has a desirably small mass of 5.3 g, versus the UNO’s 26 g.  The I/O complement of the Feather M0 is similar to the UNO; 10 analog and 8 digital pins are available in addition to I2C, SPI, and a TTL serial UART.  
+
+Since the Feather M0 uses 3.3 V logic, sensors must either operate at this voltage or use level conversion to be interfaced successfully.  A unity gain amplifier combined with a resistor divider in a 1.7:3.3 ratio will accomplish this if necessary.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=3in]{hamshield.jpg}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+\caption{Evaluating HamShield and barometric pressure sensor.}
+\label{fig_sim}
+\end{figure}
+
+\subsection{Data Transceiver}
+Our initial design for communication with the airborne payload was to occur via an onboard VHF/UHF amateur radio transceiver. An Arduino-compatible transceiver, the “HamShield”, was chosen to be evaluated due to its extensive software support and feature set.
+
+The Automatic Packet Reporting System (APRS) is “a packet communications protocol for disseminating live data to everyone on a network in real time”, and would have facilitated the telemetry/telecommand functions.  APRS messages are formatted with the AX.25 protocol, modulated by AFSK, and transmitted on 144.39 MHz. Several formats are available; the telemetry and text message formats are applicable to the radiosonde application. Digital terrestrial repeater stations receive each message and retransmit it at higher power for ease of reception by monitoring stations.  The APRS data is also collected via the Internet by several organizations for later retrieval.  For example, the aprs.fi Web site plots APRS position data using Google Maps (which will be used to track the payload), and aggegates the sensor telemetry for ease of analysis.
+
+The radio would have also accommodated image transmission via slow-scan television (SSTV) protocols.  Amateur radio SSTV is capable of transmitting a 256-line RGB image in approximately 60 seconds over UHF modes.  Downlink reception can be carried out at the operator station using a typical 70 cm capable handheld transceiver and a PC with appropriate decoding software. 
+
+The HamShield is capable of 500 mW ERP, which implies it cannot be powered solely by the Arduino controller board.  A 9V power source was therefore required.  Testing with the HamShield and 9V lithium batteries demonstrated that the signal could not be transmitted at sufficient power to reach the tracking station without causing the controller to reset.  Other undesirable characteristics of the HamShield are an inability to switch off the receiver independently and its use of 5 analog pins on the Arduino.  The support libraries also occupied 36% of program memory and 65% of data RAM, since the AFSK modulation was done in software.  These issues necessitated the rejection of the HamShield.
+
+Since any VHF/UHF transceiver was likely to express similar requirements, an alternative solution was needed. GSM cellular transceivers presented a low-cost, widely tested, and reliable means of meeting the telemetry requirement. The Adafruit FONA 808 is a combined GSM and GPS transceiver module with software support for Arduino control.  The GSM component is a 2G GSM/GPRS transceiver with support for voice, SMS, MMS, and data modes.  All of these modes are accessed through a TTL serial interface, without requiring the Arduino to manage the radio.  This greatly simplifies software interfacing to the module as well as memory usage.  Telemetry will be transmitted via SMS, and images via MMS.  SMS reception will be used to send commands to the system.  The format of messages will be retained from APRS since they provide a simple, unified format for telemetry and commands.
+
+The FONA also requires a 3.7V LiPo battery of at least 500 mAh capacity to be connected at all times while in use.  This is required to accommodate higher current needs during transmission, but also constrains the type of power source.  An external GSM antenna is required, but has a negligible mass penalty of 0.5 g compared to the 12 g VHF antenna used with the HamShield.
+
+\subsection{GPS Receiver}
+Prior to discarding the HamShield, a UBlox GP-735 GPS receiver with integrated antenna was chosen for its small dimensions and mass.  However, the FONA 808 contains a GPS receiver as well, making the UBlox redundant.  However, the FONA requires an external passive GPS antenna.  A 15 mm antenna will be used, which is larger than the UBlox integrated antenna and has a 5.5 g mass.  By combining the GSM and GPS transceivers and deleting the HamShield and UBlox, a mass savings of close to 6 g was realized. 
+
+\subsection{Sensors}
+The sensors chosen thus far for our design include the MQ-4 (Methane) sensor, MQ-7 (Carbon Monoxide) sensor, and the BMP180 Barometric Pressure Sensor. All three are low mass relative to our design and also low cost making them more ideal. Each have an easily available code library making the primary focus hardware configuration. The BMP180 was chosen because of its low power. It’s also easy to integrate into the system using the I2C interface where we can get accurate measurements of the altitude (which we must give an initial value), temperature, and pressure. The MQ-4 and MQ-7 sensors were chosen because of their low-cost and low-weight qualities along with their compatibility with the arduino and available code library. The sensors are preheated with a voltage of 5 V for a set time then around 1.4 V for another short time (60 seconds). This seems to be a current issue with the design.
+
+\subsection{Camera}
+The Adafruit TTL serial camera is capable of capturing 640x480 JPEG images.  These images will be saved to the SD storage and transmitted as MMS images.  The FONA 808 module accepts JPEG images for MMS without conversion to another format, saving time and memory in the system controller.  The camera will be interfaced with the controller using the NewSoftSerial library and digital pins, since the hardware UART will be occupied by the FONA.
+
+\subsection{Power}
+The Feather and FONA were both designed to work with 3.7V LiPo batteries, but the sensors and camera both require a 5V rail.  This will be provided by an Adafruit PowerBoost 1000C boost converter, capable of delivering 1000 mA at 5.2 VDC from a single 2500 mAh LiPo battery.  The battery will be directly wired to the Feather and FONA as these modules have their own converters.
+
+If the total current requirement of the complete system is found to exceed the capacity of the battery or boost converter, the sensors and/or FONA will need to be powered off.  The FONA has both an enable line and a command to enter a quiescent state, but the sensors are wired directly to 5V.  By placing a transistor on the ground leg and wiring the base to a digital pin, the current to the sensor can be cut off.
+
+\subsection{Lift Jettison System}
+There may be an instance where the radiosonde is malfunctioning or off course, and immediate retrieval is desired.  By jettisoning a portion of the balloons manually, the descent can be partially controlled.  By attaching balloons with fishing line and looping the line around a 10 ohm resistor, the balloons can be separated by passing 5V through the resistor for a few seconds, burning through the line.  A remote SMS command will be used to trigger the jettison, but a hard timeout will also be programmed as a failsafe.
+
+\subsection{Lift System / Chassis}
+As noted during the specification phase, each 36-inch balloon will be rated to lift 40 g. The current total mass of the system excluding chassis, resistors, and wire is about 100 g.  With four balloons attached, the radiosonde is expected to rise quickly and easily.  A 0.5 liter soda bottle will serve as the system chassis.  The bottle can be easily reduced in mass, while the top provides a suitable surface for the jettison resistor and GPS antenna.
+
+\section{Remaining Tasks}
+With the hardware architecture complete, our team will be turning to the software design.  The library required to interface with the pressure sensor is integrated into our code.  Libraries for the FONA and camera will need to be integrated when the parts arrive.  A schedule of events will need to be created with an estimated energy consumption per cycle, so that the frequency of data capture and telemetry can be verified against available power before the first flight.
+
+We expect to complete the software within the next three weeks, so that the first flight takes place no later than November 5.  If major changes to the architecture must be made after that point, there is still time to receive and integrate components before the due date.  We are confident, however, that no substantial changes will be necessary and that we will be able to conduct multiple successful flights.
+
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
