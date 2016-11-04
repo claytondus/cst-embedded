@@ -24,36 +24,31 @@
 #include <SD.h>
 
 #define CAMERA_TX 10
-#define CAMERA_RX 12
+#define CAMERA_RX 11
 
-Uart Serial2 (&sercom1, CAMERA_RX, CAMERA_TX, SERCOM_RX_PAD_3, UART_TX_PAD_2);
+Uart Serial2 (&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 void SERCOM1_Handler()
 {
   Serial2.IrqHandler();
 }
-Adafruit_VC0706 cam = Adafruit_VC0706(&Serial2);
+Adafruit_VC0706 cam = Adafruit_VC0706(&Serial1);
 
 const int chipSelect = 4;
 
-// Using hardware serial on Mega: camera TX conn. to RX1,
-// camera RX to TX1, no SoftwareSerial object is required:
-//Adafruit_VC0706 cam = Adafruit_VC0706(&Serial1);
-
 void setup() {
 
-  // When using hardware SPI, the SS pin MUST be set to an
-  // output (even if not connected or used).  If left as a
-  // floating input w/SPI on, this can cause lockuppage.
-#if !defined(SOFTWARE_SPI)
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-  if(chipSelect != 53) pinMode(53, OUTPUT); // SS on Mega
-#else
-  if(chipSelect != 10) pinMode(10, OUTPUT); // SS on Uno, etc.
-#endif
-#endif
 
-  Serial.begin(9600);
+
+  Serial.begin(115200);
+  Serial2.begin(38400);
+  while(!Serial);
+  while(!Serial2);
+
+   pinPeripheral(CAMERA_RX, PIO_SERCOM);
+  pinPeripheral(CAMERA_TX, PIO_SERCOM);
+  
   Serial.println("VC0706 Camera snapshot test");
+
   
   // see if the card is present and can be initialized:
   if (!SD.begin(chipSelect)) {
